@@ -1,1 +1,103 @@
-<h>Hello There</h>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <script type="text/javascript">
+        let W = false;
+        let A = false;
+        let S = false;
+        let D = false;
+        
+        //W drücken
+        document.onkeydown = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 87){
+                W = true;
+            }
+        }
+        document.onkeyup = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 87){
+                W = false;
+            }
+        }
+        //A drücken
+        document.onkeydown = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 65){
+                A = true;
+            }
+        }
+        document.onkeyup = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 65){
+                A = false;
+            }
+        }
+
+        //S drücken
+        document.onkeydown = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 83){
+                S = true;
+            }
+        }
+        document.onkeyup = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 83){
+                S = false;
+            }
+        }
+
+        //D drücken
+        document.onkeydown = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 68){
+                D = true;
+            }
+        }
+        document.onkeyup = function(e) {
+            console.log(e.keyCode)
+            if(e.keyCode == 68){
+                D = false;
+            }
+        }
+
+
+
+        function draw() {
+          var canvas = document.getElementById('playfield');
+          if (canvas.getContext) {
+            ctx = canvas.getContext('2d');
+          }
+        }
+
+        function startGame(){
+            setInterval(() => {
+                draw
+            }, 500);
+        }
+
+      </script>
+      <style type="text/css">
+        .button {
+         background-color: #4CAF50; /* Green */
+         border: none;
+         color: white;
+         padding:   5px 20px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 16px;
+        }
+        canvas { border: 1px solid black; }
+      </style>
+    </head>
+    <body onload="draw();">
+       <button class="button"  width="250" height="250">Start Game</button> 
+      <canvas id="playfield" width="500" height="500"></canvas>
+    </body>
+  </html>
