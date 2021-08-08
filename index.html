@@ -133,25 +133,34 @@
             document.onkeydown = function (e) {
             
             if (e.keyCode == 87 || e.keyCode == 38) {  //W, arrowup
-                velocityX = 0;
-                velocityY = -1;
+               
+                if(!(velocityY == 1)){
+                    velocityX = 0;
+                    velocityY = -1;
+                }
+                
                 console.log(velocityX + " " + velocityY);
             }
             if (e.keyCode == 65 || e.keyCode == 37) {  //A, arrowleft
-                velocityX = -1;
-                velocityY = 0;
+                if(!(velocityX == 1)){
+                     velocityX = -1;
+                     velocityY = 0;
+                }
                 console.log(velocityX + " " + velocityY);
-
             }
-            if (e.keyCode == 83 || e.keyCode == 40) {  //S, arrowrdown
-                velocityX = 0;
-                velocityY = 1;
+            if (e.keyCode == 83 || e.keyCode == 40) {  //S, arrowdown
+                if(!(velocityY == -1)){
+                    velocityX = 0;
+                    velocityY = 1;
+                } 
                 console.log(velocityX + " " + velocityY);
-
             }
             if (e.keyCode == 68 || e.keyCode == 39) {  //D, arrowright
-                velocityX = 1;
-                velocityY = 0;
+                if(!(velocityX == -1)){
+                    velocityX = 1;
+                    velocityY = 0;
+                }
+                
                 console.log(velocityX + " " + velocityY);
 
             }
@@ -179,6 +188,7 @@
 
         canvas {
             border: 1px solid black;
+            float: center;
         }
 
         .canvas-container {
