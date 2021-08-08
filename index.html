@@ -16,10 +16,14 @@
         //velocity in each direction;
         velocityX = velocityY = 0;
         //apple position
-        appleX = appleY = 8;
-        //determine the amount of tiles in the playfield 10 x 60
+        appleX = appleY = 0;
+        //determine the amount of tiles in the playfield 10 x 60, can be resized later
         gridsize = 10;
-        tilecount = 60;
+        tilecount = 60
+        //Highscore variables
+        highscore = 0;
+        
+
        
 
         
@@ -27,6 +31,10 @@
         
         function draw() {
             ctx.clearRect(0, 0, 600, 600);
+            //Dynamically adjust snake size tiles
+            gridsize = 40;
+            tilecount = canvas.width / gridsize;
+            
 
            //move head
            playerY += velocityY;
@@ -55,6 +63,8 @@
                 ctx.fillRect(tailPositions[i].x * gridsize, tailPositions[i].y * gridsize, gridsize - 2, gridsize - 2);
                 if(tailPositions[i].x == playerX && tailPositions[i].y == playerY){
                     tail = 3;
+                    
+                    gameOver();
                 }
             }
             console.log("Ingame " + velocityX + " " + velocityY);
@@ -74,31 +84,48 @@
 
             //eat apple and spawn new one
             if(appleX == playerX && appleY == playerY){
+                
                 tail++;
                 appleX = Math.floor(Math.random() * tilecount);
                 appleY = Math.floor(Math.random() * tilecount);
             }
             ctx.fillStyle = "red";
             ctx.fillRect(appleX * gridsize, appleY * gridsize, gridsize - 2, gridsize - 2);
-           
-           
+            document.getElementById('score').innerHTML = "Score: " + (tail - 3);
 
+           
+            if((tail - 3) > highscore){
+                highscore = (tail - 3);
+            }
+            document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
+            
               
         }
 
     
 
         
-
+        
         function startGame() {
             document.getElementById('startButton').style.visibility = 'hidden';
           //  document.addEventListener("keyPush", keyDown);
             canvas = document.getElementById('playfield');
             ctx = canvas.getContext('2d');
-            setInterval(draw, 150);
+           // setInterval(draw, 150);
+            setInterval(() => {
+                draw();
+                
+            }, 150);
         }
 
         function gameOver() {
+            
+            velocityX = velocityY = 0;
+            if((tail - 3) > highscore){
+                highscore = (tail - 3);
+            }
+            document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
+            
 
         }
 
@@ -155,18 +182,34 @@
         }
 
         .canvas-container {
+            float: left;
             position: relative;
             width: 600px;
             height: 600px;
+        }
+        .gameover{
+            visibility: hidden;
+            border: 1px solid black;
+        }
+        .score{
+            margin-left: 16px;
+            float: left;
         }
     </style>
 </head>
 
 <body>
+    <div class="Game">
     <div class="canvas-container">
         <button class="button" width="250" height="250" id="startButton" onclick="startGame()">Start Game</button>
         <canvas id="playfield" width="600" height="600"></canvas>
     </div>
+    <div class="score">
+        <h2 id="highscore">Highscore: 0</h2>
+        <h2 id="score">Score: 0</h2>
+
+    </div>
+</div>
 </body>
 
 </html>
