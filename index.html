@@ -7,98 +7,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake</title>
     <script type="text/javascript">
-        let W = false;
-        let A = false;
-        let S = false;
-        let D = false;
-
-        //W drücken
-        document.onkeydown = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 87) {
-                W = true;
-            }
-        }
-        document.onkeyup = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 87) {
-                W = false;
-            }
-        }
-        //A drücken
-        document.onkeydown = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 65) {
-                A = true;
-            }
-        }
-        document.onkeyup = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 65) {
-                A = false;
-            }
-        }
-
-        //S drücken
-        document.onkeydown = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 83) {
-                S = true;
-            }
-        }
-        document.onkeyup = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 83) {
-                S = false;
-            }
-        }
-
-        //D drücken
-        document.onkeydown = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 68) {
-                D = true;
-            }
-        }
-        document.onkeyup = function (e) {
-            console.log(e.keyCode)
-            if (e.keyCode == 68) {
-                D = false;
-            }
-        }
 
 
-        lastX = 0;
-        lastY = 0;
+        //snake properties
+        playerX = playerY = 3;
+        tail = 3;
+        tailPositions = [];
+        //velocity in each direction;
+        velocityX = velocityY = 0;
+        //apple position
+        appleX = appleY = 8;
+        //determine the amount of tiles in the playfield 10 x 60
+        gridsize = 10;
+        tilecount = 60;
+       
+
+        
+        
+        
         function draw() {
-            canvas = document.getElementById('playfield');
-            if (canvas.getContext) {
-                ctx = canvas.getContext('2d');
-            }
-            x = Math.floor(Math.random() * 450);
-            y = Math.floor(Math.random() * 450);
+            ctx.clearRect(0, 0, 600, 600);
 
-            ctx.fillStyle = "black";
-            ctx.fillRect(x, y , 50 , 50);
-            
-            
-            if((lastX != null) && (lastY != null)){
-                ctx.fillStyle = "white";
-                ctx.fillRect(lastX, lastY , 50 , 50); 
+           //move head
+           playerY += velocityY;
+           playerX += velocityX;
+           //Make torus board
+           if(playerX < 0){
+                playerX = tilecount - 1;
+           }
+           if(playerY < 0){
+               playerY = tilecount -1;
             }
-            lastX = x;
-            lastY = y;
+            if (playerX > tilecount - 1){
+                playerX = 0;
+            }
+            if (playerY > tilecount - 1){
+                playerY = 0;
+            }
+
+         
+           
+            //spawn snake
+            ctx.fillStyle = "green";
+            for(var i = 0; i < tailPositions.length; i++){
+                console.log("Positionen " + tailPositions[i].x + " " + tailPositions[i].y );
+
+                ctx.fillRect(tailPositions[i].x * gridsize, tailPositions[i].y * gridsize, gridsize - 2, gridsize - 2);
+                if(tailPositions[i].x == playerX && tailPositions[i].y == playerY){
+                    tail = 3;
+                }
+            }
+            console.log("Ingame " + velocityX + " " + velocityY);
+            console.log("Laenge vom Schwanz " + tailPositions.length);   
+
+            tailPositions.push({x:playerX, y:playerY});
+
+           
+
+            //for(var i = tail; i < tailPositions.length; i++)
+            while(tailPositions.length > tail) {
+               // ctx.clearRect(tailPositions[i].x, tailPositions[i].y, gridsize, gridsize);
+                tailPositions.shift();
+             }
+
+
+
+            //eat apple and spawn new one
+            if(appleX == playerX && appleY == playerY){
+                tail++;
+                appleX = Math.floor(Math.random() * tilecount);
+                appleY = Math.floor(Math.random() * tilecount);
+            }
+            ctx.fillStyle = "red";
+            ctx.fillRect(appleX * gridsize, appleY * gridsize, gridsize - 2, gridsize - 2);
+           
+           
+
               
         }
+
+    
 
         
 
         function startGame() {
             document.getElementById('startButton').style.visibility = 'hidden';
+          //  document.addEventListener("keyPush", keyDown);
+            canvas = document.getElementById('playfield');
+            ctx = canvas.getContext('2d');
+            setInterval(draw, 150);
+        }
 
-            setInterval(() => {
-                draw();
-            }, 500);
+        function gameOver() {
+
+        }
+
+        //function keyDown(e) {
+            document.onkeydown = function (e) {
+            
+            if (e.keyCode == 87 || e.keyCode == 38) {  //W, arrowup
+                velocityX = 0;
+                velocityY = -1;
+                console.log(velocityX + " " + velocityY);
+            }
+            if (e.keyCode == 65 || e.keyCode == 37) {  //A, arrowleft
+                velocityX = -1;
+                velocityY = 0;
+                console.log(velocityX + " " + velocityY);
+
+            }
+            if (e.keyCode == 83 || e.keyCode == 40) {  //S, arrowrdown
+                velocityX = 0;
+                velocityY = 1;
+                console.log(velocityX + " " + velocityY);
+
+            }
+            if (e.keyCode == 68 || e.keyCode == 39) {  //D, arrowright
+                velocityX = 1;
+                velocityY = 0;
+                console.log(velocityX + " " + velocityY);
+
+            }
+       // }
+       
         }
 
     </script>
@@ -125,8 +156,8 @@
 
         .canvas-container {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
         }
     </style>
 </head>
@@ -134,7 +165,7 @@
 <body>
     <div class="canvas-container">
         <button class="button" width="250" height="250" id="startButton" onclick="startGame()">Start Game</button>
-        <canvas id="playfield" width="500" height="500"></canvas>
+        <canvas id="playfield" width="600" height="600"></canvas>
     </div>
 </body>
 
