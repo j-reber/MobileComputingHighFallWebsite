@@ -151,33 +151,33 @@
                 motion = true;
             }
             if (motion) {
-                if (window.innerWidth > window.innerHeight) {
-                    if (event.gamma > 1.2) {
+               // if (window.innerWidth > window.innerHeight) {
+                    if (event.gamma > 1) {
                         if (velocityX != 1) {
                             velocityX = -1;
                             velocityY = 0;
                         }
 
-                    } else if (event.gamma < -1.2) {
+                    } else if (event.gamma < -1) {
                         if (velocityX != -1) {
                             velocityX = 1;
                             velocityY = 0;
                         }
                     }
 
-                    if (event.beta > 1.2) {
+                    if (event.beta > 1) {
                         if (velocityY != -1) {
                             velocityX = 0;
                             velocityY = 1;
                         }
-                    } else if (event.beta < -1.2) {
+                    } else if (event.beta < -1) {
                         if (velocityY != 1) {
                             velocityX = 0;
                             velocityY = -1;
                         }
                     }
 
-                }
+              //  }
                     }
 
                 }
@@ -272,9 +272,20 @@
         <div class="score">
             <h2 id="highscore">Highscore: 0</h2>
             <h2 id="score">Score: 0</h2>
-
         </div>
     </div>
+    <div class="startContainer">
+        <h1 id="welcome"> To start the game select a difficulity</h1>
+        <button id="easy"></button>
+        <button id="middle"></button>
+        <button id="hard"></button>
+    </div>
+    <div class="gameOverContainer">
+        <h1 id="highscoreBroken">You broke the highscore! Congratulations.</h1>
+        <h1 id="tryAgain">There is room to improve! Try again.</h1>
+        <button id="playAgain"></button>
+    </div>
+    
 </body>
 
 </html>
