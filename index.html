@@ -32,7 +32,7 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             //Dynamically adjust snake size tiles
-            //gridsize = 50;
+            
             tilecount = canvas.width / gridsize;
             
 
@@ -154,30 +154,39 @@
 		if(window.innerWidth>window.innerHeight)  {
 			if(event.gamma > 1) {
 				velocityY = -1;
+                velocityX = 0;
 			} else if(event.gamma < -1) {
 				velocityY = 1;
+                velocityX = 0;
 			} else {
 				velocityY = 0;
 			}
 			if(event.beta > 1) {
 				velocityX = 1;
+                velocityY = 0;
 			} else if(event.beta < -1) {
 				velocityX= -1;
+                velocityY = 0;
 			} else {
 				velocityX = 0;
+                velocityY = 0;
 			}
 		} else {
 			if(event.beta > 1) {
 				velocityY = 1;
+                velocityX = 0;
 			} else if(event.beta < -1) {
 				velocityY = -1;
+                velocityX = 0;
 			} else {
-				bll.speedY = 0;
+				velocityY = 0;
 			}
 			if(event.gamma > 1) {
 				velocityX = 1;
+                velocityY = 0;
 			} else if(event.gamma < -1) {
 				velocityX = -1;
+                velocityY = 0;
 			} else {
 				velocityX = 0;
 			}
