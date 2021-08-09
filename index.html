@@ -22,7 +22,12 @@
         tilecount = 60
         //Highscore variables
         highscore = 0;
+        //Toggle difficulties
         gamespeed = 150;
+        //Check for active game
+        playing = true;
+        buttonpushed = false;
+
 
 
 
@@ -31,83 +36,90 @@
 
 
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            //Dynamically adjust snake size tiles
+            //if (playing) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                //Dynamically adjust snake size tiles
 
-            tilecount = canvas.width / gridsize;
-
-
-            //move head
-            playerY += velocityY;
-            playerX += velocityX;
-            //Make torus board
-            if (playerX < 0) {
-                playerX = tilecount - 1;
-            }
-            if (playerY < 0) {
-                playerY = tilecount - 1;
-            }
-            if (playerX > tilecount - 1) {
-                playerX = 0;
-            }
-            if (playerY > tilecount - 1) {
-                playerY = 0;
-            }
+                tilecount = canvas.width / gridsize;
 
 
-
-            //spawn snake
-            ctx.fillStyle = "green";
-            for (var i = 0; i < tailPositions.length; i++) {
-                console.log("Positionen " + tailPositions[i].x + " " + tailPositions[i].y);
-
-                ctx.fillRect(tailPositions[i].x * gridsize, tailPositions[i].y * gridsize, gridsize - 2, gridsize - 2);
-                if (tailPositions[i].x == playerX && tailPositions[i].y == playerY) {
-                    tail = 3;
-
-                    gameOver();
+                //move head
+                playerY += velocityY;
+                playerX += velocityX;
+                //Make torus board
+                if (playerX < 0) {
+                    playerX = tilecount - 1;
                 }
+                if (playerY < 0) {
+                    playerY = tilecount - 1;
+                }
+                if (playerX > tilecount - 1) {
+                    playerX = 0;
+                }
+                if (playerY > tilecount - 1) {
+                    playerY = 0;
+                }
+
+
+
+                //spawn snake
+                ctx.fillStyle = "green";
+                for (var i = 0; i < tailPositions.length; i++) {
+                    console.log("Positionen " + tailPositions[i].x + " " + tailPositions[i].y);
+
+                    ctx.fillRect(tailPositions[i].x * gridsize, tailPositions[i].y * gridsize, gridsize - 2, gridsize - 2);
+                    if (tailPositions[i].x == playerX && tailPositions[i].y == playerY) {
+                        console.log("Verloren")
+                        tail = 3;
+                       // if (buttonpushed && playing) {
+
+
+                            gameOver();
+
+
+                        //}
+
+
+
+                    }
+                }
+                console.log("Ingame " + velocityX + " " + velocityY);
+                console.log("Laenge vom Schwanz " + tailPositions.length);
+
+                tailPositions.push({ x: playerX, y: playerY });
+
+
+
+                //for(var i = tail; i < tailPositions.length; i++)
+                while (tailPositions.length > tail) {
+                    // ctx.clearRect(tailPositions[i].x, tailPositions[i].y, gridsize, gridsize);
+                    tailPositions.shift();
+                }
+
+
+
+                //eat apple and spawn new one
+                if (appleX == playerX && appleY == playerY) {
+
+                    tail++;
+                    appleX = Math.floor(Math.random() * tilecount);
+                    appleY = Math.floor(Math.random() * tilecount);
+                }
+                ctx.fillStyle = "red";
+                ctx.fillRect(appleX * gridsize, appleY * gridsize, gridsize - 2, gridsize - 2);
+                document.getElementById('score').innerHTML = "Score: " + (tail - 3);
+
+
+                if ((tail - 3) > highscore) {
+                    highscore = (tail - 3);
+                }
+                document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
+
             }
-            console.log("Ingame " + velocityX + " " + velocityY);
-            console.log("Laenge vom Schwanz " + tailPositions.length);
+      //}
 
-            tailPositions.push({ x: playerX, y: playerY });
-
-
-
-            //for(var i = tail; i < tailPositions.length; i++)
-            while (tailPositions.length > tail) {
-                // ctx.clearRect(tailPositions[i].x, tailPositions[i].y, gridsize, gridsize);
-                tailPositions.shift();
-            }
-
-
-
-            //eat apple and spawn new one
-            if (appleX == playerX && appleY == playerY) {
-
-                tail++;
-                appleX = Math.floor(Math.random() * tilecount);
-                appleY = Math.floor(Math.random() * tilecount);
-            }
-            ctx.fillStyle = "red";
-            ctx.fillRect(appleX * gridsize, appleY * gridsize, gridsize - 2, gridsize - 2);
-            document.getElementById('score').innerHTML = "Score: " + (tail - 3);
-
-
-            if ((tail - 3) > highscore) {
-                highscore = (tail - 3);
-            }
-            document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
-
-
-        }
-
-
-
-        //onload funktion
-        //Schwierigkeit implementieren und Fenster Grö
         function startGame(difficulty) {
+            playing = true;
             canvas = document.getElementById('playfield');
             ctx = canvas.getContext('2d');
             if (difficulty == 3) {
@@ -119,22 +131,36 @@
             if (difficulty == 1) {
                 gamespeed = 150;
             }
+
             document.getElementById('startContainer').style.visibility = 'hidden';
+            document.getElementById('gameOver').style.visibility = 'hidden';
             setInterval(() => {
                 draw();
+               
 
             }, gamespeed);
         }
 
         function gameOver() {
-
+            playing = false;
+            buttonpushed = false;
             velocityX = velocityY = 0;
+
             if ((tail - 3) > highscore) {
                 highscore = (tail - 3);
+                docuument.getElementById('tryAgain').style.visibility = 'hidden';
+            }
+            else {
+                document.getElementById('highscoreBroken').style.visibility = 'hidden';
             }
             document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
+            var test = document.querySelector('#gameOver');
+            test.visibility = "visible";
+
+
+
         }
-       // document.getElementById('gameOverContainer').style.visibility = 'visible';
+
 
         function resizeWindow() {
             sqaure = 400;
@@ -156,7 +182,7 @@
 
         }
         window.addEventListener('resize', resizeWindow);
-        window.addEventListener("deviceorientation", function (event) {
+        window.addEventListener('deviceorientation', function (event) {
 
 
             // if (window.innerWidth > window.innerHeight) {
@@ -184,13 +210,12 @@
                     velocityX = -1;
                 }
             }
-
+            buttonpushed = true;
             //  }
         }, true);
 
 
         window.addEventListener('keydown', function (e) {
-            // document.onkeydown = function (e) {
 
             if (e.keyCode == 87 || e.keyCode == 38) {  //W, arrowup
 
@@ -223,6 +248,7 @@
 
                 console.log(velocityX + " " + velocityY);
             }
+            buttonpushed = true;
         })
 
 
@@ -239,15 +265,18 @@
             text-decoration: none;
             font-size: 16px;
             position: relative;
-            left: 25%;
+            left: 0%;
             float: center;
 
 
         }
 
+        .parent {
+            text-align: center;
+        }
+
         canvas {
             border: 1px solid black;
-            float: center;
         }
 
         .canvas-container {
@@ -256,57 +285,68 @@
             padding-right: 0;
             margin-left: auto;
             margin-right: auto;
+            margin-top: auto;
             display: block;
             width: 800px;
+            position: relative;
+
 
 
         }
 
         .startContainer {
 
-            float: center;
+            visibility: visible;
             position: absolute;
-            left: 30%;
-            bottom: 40%;
+            left: 20%;
+            top: 30%;
 
         }
 
 
         .gameOverContainer {
-            visibility: hidden;
-            border: 1px solid black;
+            display: none;
+            position: absolute;
+            left: 13%;
+            top: 30%;
+
         }
 
         .score {
-            margin-left: 16px;
+            margin-left: -35px;
             position: absolute;
-            float: left;
+            left: 0%;
+            top: 0%;
         }
     </style>
 </head>
 
 <body>
+    <div class="parent">
+        <div class="canvas-container">
+            <div class="startContainer" id="startContainer">
+                <h1 id="welcome"> To start the game select a difficulity</h1>
+                <div class="difficultyButton">
+                    <button id="easy" class="button" onclick="startGame(1)">Easy</button>
+                    <button id="middle" class="button" onclick="startGame(2)">Middle</button>
+                    <button id="hard" class="button" onclick="startGame(3)">Hard</button>
+                </div>
+            </div>
+            <canvas id="playfield" width="600" height="600"></canvas>
+            <div class="score">
+                <h2 id="highscore">Highscore: 0</h2>
+                <h2 id="score">Score: 0</h2>
+            </div>
+            <div id="gameOver" class="gameOverContainer">
+                <h1 id="highscoreBroken">You broke the highscore! Congratulations.</h1>
+                <h1 id="tryAgain">There is room to improve! Try again.</h1>
+                <button id="playAgainEasy" class="button" onclick="startGame(1)">Play again (Easy)</button>
+                <button id="playAgainMiddle" class="button" onclick="startGame(2)">Play again (Middle)</button>
+                <button id="playAgainHard" class="button" onclick="startGame(3)">Play again (Hard)</button>
+            </div>
 
-    <div class="canvas-container">
-        <div class="startContainer" id="startContainer">
-            <h1 id="welcome"> To start the game select a difficulity</h1>
-            <button id="easy" class="button" onclick="startGame(1)">Easy</button>
-            <button id="middle" class="button" onclick="startGame(2)">Middle</button>
-            <button id="hard" class="button" onclick="startGame(3)">Hard</button>
         </div>
-        <canvas id="playfield" width="600" height="600"></canvas>
-        <div class="score">
-            <h2 id="highscore">Highscore: 0</h2>
-            <h2 id="score">Score: 0</h2>
-        </div>
-        <div class="gameOverContainer" id="gameOverContainer">
-            <h1 id="highscoreBroken">You broke the highscore! Congratulations.</h1>
-            <h1 id="tryAgain">There is room to improve! Try again.</h1>
-            <button id="playAgain" class="button"></button>
-        </div>
-
     </div>
-
 
 
 
