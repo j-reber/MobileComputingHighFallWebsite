@@ -16,75 +16,75 @@
         //velocity in each direction;
         velocityX = velocityY = 0;
         //apple position
-        appleX = appleY = 0;
+        appleX = appleY = 15;
         //determine the amount of tiles in the playfield 10 x 60, can be resized later
         gridsize = 10;
         tilecount = 60
         //Highscore variables
         highscore = 0;
-        
 
-       
 
-        
-        
-        
+
+
+
+
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             //Dynamically adjust snake size tiles
-            
-            tilecount = canvas.width / gridsize;
-            
 
-           //move head
-           playerY += velocityY;
-           playerX += velocityX;
-           //Make torus board
-           if(playerX < 0){
+            tilecount = canvas.width / gridsize;
+
+
+            //move head
+            playerY += velocityY;
+            playerX += velocityX;
+            //Make torus board
+            if (playerX < 0) {
                 playerX = tilecount - 1;
-           }
-           if(playerY < 0){
-               playerY = tilecount -1;
             }
-            if (playerX > tilecount - 1){
+            if (playerY < 0) {
+                playerY = tilecount - 1;
+            }
+            if (playerX > tilecount - 1) {
                 playerX = 0;
             }
-            if (playerY > tilecount - 1){
+            if (playerY > tilecount - 1) {
                 playerY = 0;
             }
 
-         
-           
+
+
             //spawn snake
             ctx.fillStyle = "green";
-            for(var i = 0; i < tailPositions.length; i++){
-                console.log("Positionen " + tailPositions[i].x + " " + tailPositions[i].y );
+            for (var i = 0; i < tailPositions.length; i++) {
+                console.log("Positionen " + tailPositions[i].x + " " + tailPositions[i].y);
 
                 ctx.fillRect(tailPositions[i].x * gridsize, tailPositions[i].y * gridsize, gridsize - 2, gridsize - 2);
-                if(tailPositions[i].x == playerX && tailPositions[i].y == playerY){
+                if (tailPositions[i].x == playerX && tailPositions[i].y == playerY) {
                     tail = 3;
-                    
+
                     gameOver();
                 }
             }
             console.log("Ingame " + velocityX + " " + velocityY);
-            console.log("Laenge vom Schwanz " + tailPositions.length);   
+            console.log("Laenge vom Schwanz " + tailPositions.length);
 
-            tailPositions.push({x:playerX, y:playerY});
+            tailPositions.push({ x: playerX, y: playerY });
 
-           
+
 
             //for(var i = tail; i < tailPositions.length; i++)
-            while(tailPositions.length > tail) {
-               // ctx.clearRect(tailPositions[i].x, tailPositions[i].y, gridsize, gridsize);
+            while (tailPositions.length > tail) {
+                // ctx.clearRect(tailPositions[i].x, tailPositions[i].y, gridsize, gridsize);
                 tailPositions.shift();
-             }
+            }
 
 
 
             //eat apple and spawn new one
-            if(appleX == playerX && appleY == playerY){
-                
+            if (appleX == playerX && appleY == playerY) {
+
                 tail++;
                 appleX = Math.floor(Math.random() * tilecount);
                 appleY = Math.floor(Math.random() * tilecount);
@@ -93,16 +93,16 @@
             ctx.fillRect(appleX * gridsize, appleY * gridsize, gridsize - 2, gridsize - 2);
             document.getElementById('score').innerHTML = "Score: " + (tail - 3);
 
-           
-            if((tail - 3) > highscore){
+
+            if ((tail - 3) > highscore) {
                 highscore = (tail - 3);
             }
             document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
-            
-              
+
+
         }
 
-    
+
 
         //onload funktion
         //Schwierigkeit implementieren und Fenster Grö
@@ -110,126 +110,138 @@
             document.getElementById('startButton').style.visibility = 'hidden';
             canvas = document.getElementById('playfield');
             ctx = canvas.getContext('2d');
-           // setInterval(draw, 150);
+            // setInterval(draw, 150);
             setInterval(() => {
                 draw();
-                
+
             }, 75);
         }
 
         function gameOver() {
-            
+
             velocityX = velocityY = 0;
-            if((tail - 3) > highscore){
+            if ((tail - 3) > highscore) {
                 highscore = (tail - 3);
             }
             document.getElementById('highscore').innerHTML = "Highscore: " + highscore;
         }
 
-        function resizeWindow(){
+        function resizeWindow() {
             sqaure = 400;
             ctx = document.getElementById('playfield').getContext('2d');
-            if(window.outerHeight <= window.outerWidth){
+            if (window.outerHeight <= window.outerWidth) {
                 sqaure = window.outerHeight;
             }
-            else{
+            else {
                 sqaure = window.outerWidth;
             }
             sqaure -= 200;
             Math.round(sqaure);
-            while((sqaure % gridsize) != 0){
+            while ((sqaure % gridsize) != 0) {
                 sqaure--;
                 console.log(sqaure);
             }
             ctx.canvas.width = sqaure;
             ctx.canvas.height = sqaure;
-            
-         }
+
+        }
         window.addEventListener('resize', resizeWindow);
-        window.addEventListener("deviceorientation", function(event) {
-	if(event.beta != null) {
-		motion = true;
-	}
-	if(motion) {
-		if(window.innerWidth>window.innerHeight)  {
-			if(event.gamma > 1) {
-				velocityY = -1;
-                velocityX = 0;
-			} else if(event.gamma < -1) {
-				velocityY = 1;
-                velocityX = 0;
-			} else {
-				velocityY = 0;
-			}
-			if(event.beta > 1) {
-				velocityX = 1;
-                velocityY = 0;
-			} else if(event.beta < -1) {
-				velocityX= -1;
-                velocityY = 0;
-			} else {
-				velocityX = 0;
-                velocityY = 0;
-			}
-		} else {
-			if(event.beta > 1) {
-				velocityY = 1;
-                velocityX = 0;
-			} else if(event.beta < -1) {
-				velocityY = -1;
-                velocityX = 0;
-			} else {
-				velocityY = 0;
-			}
-			if(event.gamma > 1) {
-				velocityX = 1;
-                velocityY = 0;
-			} else if(event.gamma < -1) {
-				velocityX = -1;
-                velocityY = 0;
-			} else {
-				velocityX = 0;
-			}
-		}
-	}
-}, true);
+        window.addEventListener("deviceorientation", function (event) {
+            if (event.beta != null) {
+                motion = true;
+            }
+            if (motion) {
+                if (window.innerWidth > window.innerHeight) {
+                    if (event.gamma > 1) {
+                        if (velocityY != 1) {
+                            velocityY = -1;
+                            velocityX = 0;
+                        }
+
+                    } else if (event.gamma < -1) {
+                        if (velocityY != -1) {
+                            velocityY = 1;
+                            velocityX = 0;
+                        }
+                    }
+
+                    if (event.beta > 1) {
+                        if (velocityx != -1) {
+                            velocityY = 0;
+                            velocityX = 1;
+                        }
+                    } else if (event.beta < -1) {
+                        if (velocityX != 1) {
+                            velocityY = 0;
+                            velocityX = -1;
+                        }
+                    }
+
+                } else {
+                    if (event.beta > 1) {
+                        if (velocityY != -1) {
+                            velocityY = 1;
+                            velocityX = 0;
+                        }
+                    } else if (event.beta < -1) {
+                        if (velocityY != 1) {
+                            velocityY = -1;
+                            velocityX = 0;
+                        }
+                    }
+
+                    if (event.gamma > 1) {
+                        if (velocityx != -1) {
+                            velocityY = 0;
+                            velocityX = 1;
+                        }
+                    } else if (event.gamma < -1) {
+                        if (velocityX != 1) {
+                            velocityY = 0;
+                            velocityX = -1;
+                        }
+                    }
+
+                }
+            }
+        }, true);
         window.addEventListener('keydown', function (e) {
-           // document.onkeydown = function (e) {
-            
+            // document.onkeydown = function (e) {
+
             if (e.keyCode == 87 || e.keyCode == 38) {  //W, arrowup
-               
-                if(!(velocityY == 1)){
+
+                if (!(velocityY == 1)) {
                     velocityX = 0;
                     velocityY = -1;
                 }
-                
+
                 console.log(velocityX + " " + velocityY);
             }
             if (e.keyCode == 65 || e.keyCode == 37) {  //A, arrowleft
-                if(!(velocityX == 1)){
-                     velocityX = -1;
-                     velocityY = 0;
+                if (!(velocityX == 1)) {
+                    velocityX = -1;
+                    velocityY = 0;
                 }
                 console.log(velocityX + " " + velocityY);
             }
             if (e.keyCode == 83 || e.keyCode == 40) {  //S, arrowdown
-                if(!(velocityY == -1)){
+                if (!(velocityY == -1)) {
                     velocityX = 0;
                     velocityY = 1;
-                } 
+                }
                 console.log(velocityX + " " + velocityY);
             }
             if (e.keyCode == 68 || e.keyCode == 39) {  //D, arrowright
-                if(!(velocityX == -1)){
+                if (!(velocityX == -1)) {
                     velocityX = 1;
                     velocityY = 0;
                 }
-                
+
                 console.log(velocityX + " " + velocityY);
             }
-       })
-       
-        
+        })
+
+
 
     </script>
     <style>
@@ -260,11 +272,13 @@
             width: 600px;
             height: 600px;
         }
-        .gameover{
+
+        .gameover {
             visibility: hidden;
             border: 1px solid black;
         }
-        .score{
+
+        .score {
             margin-left: 16px;
             float: left;
         }
@@ -273,16 +287,16 @@
 
 <body>
     <div class="Game">
-    <div class="canvas-container">
-        <button class="button" width="250" height="250" id="startButton" onclick="startGame()">Start Game</button>
-        <canvas id="playfield" width="600" height="600"></canvas>
-    </div>
-    <div class="score">
-        <h2 id="highscore">Highscore: 0</h2>
-        <h2 id="score">Score: 0</h2>
+        <div class="canvas-container">
+            <button class="button" width="250" height="250" id="startButton" onclick="startGame()">Start Game</button>
+            <canvas id="playfield" width="600" height="600"></canvas>
+        </div>
+        <div class="score">
+            <h2 id="highscore">Highscore: 0</h2>
+            <h2 id="score">Score: 0</h2>
 
+        </div>
     </div>
-</div>
 </body>
 
 </html>
