@@ -16,6 +16,7 @@ gamespeed = 150;
 //Check for active game
 playing = true;
 buttonpushed = false;
+startedOnce = true;
 
 //Get Canvas and its context
 
@@ -138,17 +139,21 @@ function startGame() {
     playing = true;
     document.getElementById('startContainer').style.visibility = 'hidden';
     document.getElementById('gameOver').style.visibility = 'hidden';
-    setInterval(() => {
-        draw();
+    if (startedOnce) {
+        startedOnce = false;
+        setInterval(() => {
+            draw();
 
 
-    }, gamespeed);
+        }, gamespeed);
+    }
 }
 
 
 function gameOver() {
     playing = false;
     buttonpushed = false;
+    
     canvas = document.getElementById('playfield');
     ctx = canvas.getContext('2d');
 
@@ -214,7 +219,7 @@ window.addEventListener('deviceorientation', function (event) {
             velocityX = 0;
         }
     }
-   // document.getElementById('helper2').innerHTML = "if";
+    // document.getElementById('helper2').innerHTML = "if";
 
     // }
 
