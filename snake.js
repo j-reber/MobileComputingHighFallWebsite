@@ -129,7 +129,7 @@ function startGame(difficulty) {
     if (difficulty == 1) {
         gamespeed = 150;
     }
-    resizeWindow();
+    //resizeWindow();
     startGame();
 
 

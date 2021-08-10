@@ -27,7 +27,7 @@ canvas {
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
-    margin-top: auto;
+    margin-top: 4% ;
     display: block;
     width: 800px;
     position: relative;
@@ -54,9 +54,14 @@ canvas {
 
 }
 
-.score {
-    margin-left: -35px;
+#score {
+    margin-left: 0;
     position: absolute;
-    left: 0%;
-    top: 0%;
+    left: 13%;
+    top: -8%;
+}
+#highscore{
+    position: absolute;
+    top: -8%;
+    right: 16%;
 }
