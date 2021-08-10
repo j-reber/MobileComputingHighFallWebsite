@@ -129,6 +129,7 @@ function startGame(difficulty) {
     if (difficulty == 1) {
         gamespeed = 150;
     }
+    resizeWindow();
     startGame();
 
 
@@ -213,7 +214,7 @@ window.addEventListener('deviceorientation', function (event) {
             velocityX = 0;
         }
     }
-    document.getElementById('helper2').innerHTML = "if";
+   // document.getElementById('helper2').innerHTML = "if";
 
     // }
 
@@ -246,7 +247,7 @@ window.addEventListener('deviceorientation', function (event) {
 
     // }
     buttonpushed = true;
-    document.getElementById('helper').innerHTML = "beta " + event.beta + " \ngamma " + event.gamma;
+    //document.getElementById('helper').innerHTML = "beta " + event.beta + " \ngamma " + event.gamma;
 
 }, true);
 
