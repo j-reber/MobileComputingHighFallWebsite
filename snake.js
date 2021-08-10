@@ -188,7 +188,7 @@ window.addEventListener('resize', resizeWindow);
 window.addEventListener('deviceorientation', function (event) {
 
 
-    if (window.innerWidth > window.innerHeight) {
+    //if (window.innerWidth > window.innerHeight) {
         if (event.gamma > 2) {
             // if (!(velocityY == 1)) {
             velocityY = -1;
@@ -215,7 +215,7 @@ window.addEventListener('deviceorientation', function (event) {
         }
         buttonpushed = true;
         document.getElementById('helper').innerHTML = event.beta + " " + event.gamma;
-    }
+    //}
 }, true);
 
 
