@@ -214,6 +214,7 @@ window.addEventListener('deviceorientation', function (event) {
             // }
         }
         buttonpushed = true;
+        document.getElementById('helper').innerHTML = event.beta + " " + event.gamma;
     }
 }, true);
 
