@@ -188,34 +188,66 @@ function resizeWindow() {
 window.addEventListener('deviceorientation', function (event) {
 
 
-    //if (window.innerWidth > window.innerHeight) {
-    if (event.gamma > event.beta && event.gamma > 5) {
-        if (!(velocityY == 1)) {
-            velocityY = -1;
-            velocityX = 0;
+    if (window.innerWidth > window.innerHeight) {
+        if (Math.abs(event.gamma) > Math.abs(event.beta) && event.gamma > 10) {
+            if (!(velocityX == -1)) {
+                velocityY = 0;
+                velocityX = 1;
+            }
+
+        } else if (Math.abs(event.gamma) > Math.abs(event.beta) && event.gamma < -10) {
+            if (!(velocityX == 1)) {
+                velocityY = 0;
+                velocityX = -1;
+            }
         }
 
-    } else if (event.gamma > event.beta && event.gamma < -5) {
-        if (!(velocityY == -1)) {
-            velocityY = 1;
-            velocityX = 0;
+        if (Math.abs(event.gamma) < Math.abs(event.beta) && event.beta > 10) {
+            if (!(velocityY== -1)) {
+                velocityY = 1;
+                velocityX = 0;
+            }
+        } else if (Math.abs(event.gamma) < Math.abs(event.beta) && event.beta < -10) {
+            if (!(velocityY == 1)) {
+                velocityY = -1;
+                velocityX = 0;
+            }
         }
+        document.getElementById('helper2').innerHTML = "if";
+
     }
+    
+    else {
+        if (event.gamma > event.beta && event.gamma > 10) {
+            if (!(velocityY == 1)) {
+                velocityY = -1;
+                velocityX = 0;
+            }
 
-    if (event.gamma < event.beta && event.beta > 5) {
-        if (!(velocityX == -1)) {
-            velocityY = 0;
-            velocityX = 1;
+        } else if (event.gamma > event.beta && event.gamma < -10) {
+            if (!(velocityY == -1)) {
+                velocityY = 1;
+                velocityX = 0;
+            }
         }
-    } else if ( event.gamma < event.beta && event.beta < -5) {
-        if (!(velocityX == 1)) {
-            velocityY = 0;
-            velocityX = -1;
+
+        if (event.gamma < event.beta && event.beta > 10) {
+            if (!(velocityX == -1)) {
+                velocityY = 0;
+                velocityX = 1;
+            }
+        } else if (event.gamma < event.beta && event.beta < -10) {
+            if (!(velocityX == 1)) {
+                velocityY = 0;
+                velocityX = -1;
+            }
         }
+        document.getElementById('helper2').innerHTML = "else";
+
     }
     buttonpushed = true;
-    document.getElementById('helper').innerHTML = "beta " + event.beta + " gamma " + event.gamma;
-    //}
+    document.getElementById('helper').innerHTML = "beta " + event.beta + " \ngamma " + event.gamma;
+
 }, true);
 
 
