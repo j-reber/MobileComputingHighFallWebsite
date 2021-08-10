@@ -184,37 +184,37 @@ function resizeWindow() {
     ctx.canvas.height = sqaure;
 
 }
-window.addEventListener('resize', resizeWindow);
+//window.addEventListener('resize', resizeWindow);
 window.addEventListener('deviceorientation', function (event) {
 
 
     //if (window.innerWidth > window.innerHeight) {
-        if (event.gamma > 2) {
-            // if (!(velocityY == 1)) {
+    if (event.gamma > event.beta && event.gamma > 5) {
+        if (!(velocityY == 1)) {
             velocityY = -1;
             velocityX = 0;
-            //}
+        }
 
-        } else if (event.gamma < -2) {
-            //  if (!(velocityY == -1)) {
+    } else if (event.gamma > event.beta && event.gamma < -5) {
+        if (!(velocityY == -1)) {
             velocityY = 1;
             velocityX = 0;
         }
-        //  }
+    }
 
-        if (event.beta > 2) {
-            //   if (!(velocityX == -1)) {
+    if (event.gamma < event.beta && event.beta > 5) {
+        if (!(velocityX == -1)) {
             velocityY = 0;
             velocityX = 1;
-            //   }
-        } else if (event.beta < -2) {
-            //if (!(velocityX == 1)) {
+        }
+    } else if ( event.gamma < event.beta && event.beta < -5) {
+        if (!(velocityX == 1)) {
             velocityY = 0;
             velocityX = -1;
-            // }
         }
-        buttonpushed = true;
-        document.getElementById('helper').innerHTML = event.beta + " " + event.gamma;
+    }
+    buttonpushed = true;
+    document.getElementById('helper').innerHTML = "beta " + event.beta + " gamma " + event.gamma;
     //}
 }, true);
 
