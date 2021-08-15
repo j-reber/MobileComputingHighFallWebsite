@@ -7,7 +7,7 @@ velocityX = velocityY = 0;
 //apple position
 appleX = appleY = 15;
 //determine the amount of tiles in the playfield 10 x 60, can be resized later
-gridsize = 10;
+gridsize = 20;
 tilecount = 60
 //Highscore variables
 highscore = 0;
@@ -30,6 +30,8 @@ startedOnce = true;
 function draw() {
     canvas = document.getElementById('playfield');
     ctx = canvas.getContext('2d');
+
+   
 
     if (playing) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -173,14 +175,14 @@ function gameOver() {
 
 
 function resizeWindow() {
-    sqaure = 400;
-    if (window.outerHeight <= window.outerWidth) {
-        sqaure = window.outerHeight;
+    sqaure = 600;
+    if (window.innerHeight <= window.innerWidth) {
+        sqaure = window.innerHeight;
     }
     else {
-        sqaure = window.outerWidth;
+        sqaure = window.innerWidth;
     }
-    sqaure -= 200;
+   
     Math.round(sqaure);
     while ((sqaure % gridsize) != 0) {
         sqaure--;
@@ -291,5 +293,7 @@ window.addEventListener('keydown', function (e) {
         console.log(velocityX + " " + velocityY);
     }
     buttonpushed = true;
-})
+});
+
+window.addEventListener("load", resizeWindow);
 
